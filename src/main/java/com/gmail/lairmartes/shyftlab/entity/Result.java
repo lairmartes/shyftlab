@@ -2,9 +2,9 @@ package com.gmail.lairmartes.shyftlab.entity;
 
 import com.gmail.lairmartes.shyftlab.enums.Score;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.Objects;
@@ -21,15 +21,15 @@ public class Result {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
-    @NonNull
+    @NotNull
     private Student student;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
-    @NonNull
+    @NotNull
     private Course course;
 
-    @NonNull
+    @NotNull
     private Score score;
 
     @Override

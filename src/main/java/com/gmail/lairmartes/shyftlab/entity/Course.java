@@ -1,9 +1,9 @@
 package com.gmail.lairmartes.shyftlab.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.Objects;
@@ -19,7 +19,7 @@ public class Course {
     @GeneratedValue
     private long id;
 
-    @NonNull
+    @NotNull
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "course", cascade = CascadeType.ALL)

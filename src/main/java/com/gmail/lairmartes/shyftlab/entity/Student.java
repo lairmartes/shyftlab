@@ -4,17 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import org.springframework.validation.annotation.Validated;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @Builder
 @Entity
 public class Student {
@@ -31,7 +27,7 @@ public class Student {
     private String familyName;
     @NotNull
     private LocalDate birthDate;
-    @Email(message = "Provide a valid email.")
+    @NotNull
     private String email;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "student", cascade = CascadeType.ALL)
