@@ -24,11 +24,4 @@ public @interface MinimumAge {
 
     int value();
 
-    @Target({FIELD, METHOD, PARAMETER, ANNOTATION_TYPE})
-    @Retention(RUNTIME)
-    @Documented
-    @interface List {
-        int[] value();
-    }
-
 }
