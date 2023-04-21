@@ -4,6 +4,7 @@ import com.gmail.lairmartes.shyftlab.enums.Score;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.Objects;
@@ -20,12 +21,15 @@ public class Result {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
+    @NonNull
     private Student student;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
+    @NonNull
     private Course course;
 
+    @NonNull
     private Score score;
 
     @Override

@@ -1,9 +1,13 @@
 package com.gmail.lairmartes.shyftlab.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -21,9 +25,13 @@ public class Student {
     @GeneratedValue
     private long id;
 
+    @NotNull
     private String firstName;
+    @NotNull
     private String familyName;
+    @NotNull
     private LocalDate birthDate;
+    @Email(message = "Provide a valid email.")
     private String email;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "student", cascade = CascadeType.ALL)
