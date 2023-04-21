@@ -1,4 +1,4 @@
-package com.gmail.lairmartes.shyftlab.service.domain;
+package com.gmail.lairmartes.shyftlab.domain;
 
 import com.gmail.lairmartes.shyftlab.entity.Course;
 import com.gmail.lairmartes.shyftlab.entity.Student;

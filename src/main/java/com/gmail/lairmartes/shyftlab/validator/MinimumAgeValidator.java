@@ -1,6 +1,5 @@
-package com.gmail.lairmartes.shyftlab.service.domain.validator;
+package com.gmail.lairmartes.shyftlab.validator;
 
-import com.gmail.lairmartes.shyftlab.entity.Student;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;

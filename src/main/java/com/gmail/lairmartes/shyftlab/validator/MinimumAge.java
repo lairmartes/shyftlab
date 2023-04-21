@@ -1,4 +1,4 @@
-package com.gmail.lairmartes.shyftlab.service.domain.validator;
+package com.gmail.lairmartes.shyftlab.validator;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

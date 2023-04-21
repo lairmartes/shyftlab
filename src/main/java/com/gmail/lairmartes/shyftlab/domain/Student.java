@@ -1,4 +1,4 @@
-package com.gmail.lairmartes.shyftlab.service.domain;
+package com.gmail.lairmartes.shyftlab.domain;
 
 import jakarta.validation.constraints.Email;
 import lombok.*;
