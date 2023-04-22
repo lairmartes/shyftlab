@@ -34,11 +34,4 @@ public class StudentController {
     public void removeStudent(@PathVariable("id") @NotNull Long id) {
         studentService.removeStudentById(id);
     }
-
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
 }
