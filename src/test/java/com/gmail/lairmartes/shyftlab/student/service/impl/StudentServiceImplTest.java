@@ -22,6 +22,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class StudentServiceImplTest {
 
+    public static final String EXPECTED_MINIMUM_AGE_ERROR_MESSAGE = "Minimum student age must be " + Student.STUDENT_MINIMUM_ALLOWED_AGE + " years old.";
     @MockBean
     private Clock mockClock;
 
@@ -47,7 +48,7 @@ class StudentServiceImplTest {
                 "Provide a first name.",
                 "Provide a family name.",
                 "Provide a birth date.",
-                "Minimum student age must be 10 years old.",
+                EXPECTED_MINIMUM_AGE_ERROR_MESSAGE,
                 "Provide a valid email."
         );
 
@@ -60,6 +61,52 @@ class StudentServiceImplTest {
                 .map(ConstraintViolation::getMessage)
                 .toList()
                 .containsAll(expectedMessages));
+
+        verify(mockStudentRepository, never()).save(any());
+    }
+
+    @Test
+    void addStudent_whenEmailIsInvalid_thenThrowsViolationException() {
+
+        final Student studentWithInvalidEmail = Student
+                .builder()
+                .firstName("Naruto")
+                .familyName("Uzumaki")
+                .birthDate(LocalDate.of(1995, 10, 10))
+                .email("naruto.uzumaki_adm.konoha.gov.br")
+                .build();
+
+        ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
+                () ->  studentService.addStudent(studentWithInvalidEmail));
+
+        assertTrue(exception.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .toList()
+                .contains("Provide a valid email."));
+
+        verify(mockStudentRepository, never()).save(any());
+    }
+
+    @Test
+    void addStudent_whenAgeIsNotMinimumAllowed_thenThrowsViolationException() {
+
+        final Student studentWithInvalidEmail = Student
+                .builder()
+                .firstName("Naruto")
+                .familyName("Uzumaki")
+                .birthDate(LocalDate.of(2013, 4, 22))
+                .email("naruto.uzumaki@adm.konoha.gov.br")
+                .build();
+
+        ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
+                () ->  studentService.addStudent(studentWithInvalidEmail));
+
+        assertTrue(exception.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .toList()
+                .contains(EXPECTED_MINIMUM_AGE_ERROR_MESSAGE));
 
         verify(mockStudentRepository, never()).save(any());
     }

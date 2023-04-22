@@ -15,13 +15,16 @@ import java.time.LocalDate;
 @ToString
 @Validated
 public class Student {
+    public static final int STUDENT_MINIMUM_ALLOWED_AGE = 10;
+    private static final String STUDENT_MINIMUM_ALLOWED_AGE_MESSAGE = "Minimum student age must be " + STUDENT_MINIMUM_ALLOWED_AGE + " years old.";
+
     private long id;
     @NotBlank(message = "Provide a first name.")
     private String firstName;
     @NotBlank(message = "Provide a family name.")
     private String familyName;
     @NotNull(message = "Provide a birth date.")
-    @MinimumAge(value = 10, message = "Minimum student age must be 10 years old.")
+    @MinimumAge(value = STUDENT_MINIMUM_ALLOWED_AGE, message = STUDENT_MINIMUM_ALLOWED_AGE_MESSAGE)
     private LocalDate birthDate;
     @NotNull(message = "Provide a valid email.")
     @Email(message = "Provide a valid email.")
