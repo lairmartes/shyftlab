@@ -29,6 +29,12 @@ public class StudentController {
         return studentService.listAllStudents().stream().map(StudentDTO::fromDomain).collect(Collectors.toList());
     }
 
+    @DeleteMapping("/{id}")
+    public void removeStudent(@PathVariable("id") Long id) {
+        studentService.removeStudent(id);
+    }
+
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);

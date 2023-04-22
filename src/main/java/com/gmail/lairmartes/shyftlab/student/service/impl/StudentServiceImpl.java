@@ -29,4 +29,9 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> listAllStudents() {
         return studentRepository.findAll().stream().map(Student::fromEntity).collect(Collectors.toList());
     }
+
+    @Override
+    public void removeStudent(long id) {
+        studentRepository.deleteById(id);
+    }
 }
