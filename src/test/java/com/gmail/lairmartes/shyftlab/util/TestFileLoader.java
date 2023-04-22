@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 public class TestFileLoader {
 
-    public String loadTestFile(final String path) throws IOException {
+    public static String loadTestFile(final String path) throws IOException {
         Class<TestFileLoader> clazz = TestFileLoader.class;
 
         InputStream is = clazz.getResourceAsStream(path);
@@ -15,7 +15,7 @@ public class TestFileLoader {
         return readFromInputStream(is);
     }
 
-    private String readFromInputStream(final InputStream inputStream)
+    private static String readFromInputStream(final InputStream inputStream)
             throws IOException {
         StringBuilder resultStringBuilder = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
