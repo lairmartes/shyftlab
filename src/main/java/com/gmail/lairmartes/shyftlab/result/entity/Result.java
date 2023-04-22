@@ -15,6 +15,7 @@ import java.util.Objects;
 @Setter
 @Builder
 @Entity
+@Table(name = "results")
 public class Result {
 
     @Id

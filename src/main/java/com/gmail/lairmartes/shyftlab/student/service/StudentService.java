@@ -4,9 +4,8 @@ import com.gmail.lairmartes.shyftlab.student.domain.Student;
 import jakarta.validation.Valid;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @Service
 public interface StudentService {
-    Student addStudent(@NonNull @Valid Student newStudent) throws MethodArgumentNotValidException;
+    Student addStudent(@NonNull @Valid Student newStudent);
 }

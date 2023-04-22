@@ -14,6 +14,7 @@ import java.util.Set;
 @Setter
 @Builder
 @Entity
+@Table(name = "courses")
 public class Course {
 
     @Id
