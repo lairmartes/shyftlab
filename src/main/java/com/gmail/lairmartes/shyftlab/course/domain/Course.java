@@ -1,5 +1,6 @@
 package com.gmail.lairmartes.shyftlab.course.domain;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Getter
@@ -10,7 +11,7 @@ public class Course {
 
     private long id;
 
-    @NonNull
+    @NotBlank(message = "Provide a name for the course")
     private String name;
 
     public com.gmail.lairmartes.shyftlab.course.entity.Course toEntity() {
