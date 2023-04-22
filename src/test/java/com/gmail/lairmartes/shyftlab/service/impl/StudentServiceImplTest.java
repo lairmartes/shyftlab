@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class StudentServiceImplTest {
@@ -47,10 +47,13 @@ class StudentServiceImplTest {
                 () ->  studentService.addStudent(invalidStudentTest));
 
         assertFalse(exception.getConstraintViolations().isEmpty());
+
+        verify(mockStudentRepository, never()).save(any());
     }
 
     @Test
     void addStudent_whenStudentIsValid_thenSaveInRepository() {
+
         final Student validStudent = Student
                 .builder()
                 .firstName("Naruto")
@@ -58,5 +61,9 @@ class StudentServiceImplTest {
                 .birthDate(LocalDate.of(1995, 10, 10))
                 .email("naruto.uzumaki@adm.konoha.gov.br")
                 .build();
+
+        studentService.addStudent(validStudent);
+
+        verify(mockStudentRepository, times(1)).save(validStudent);
     }
 }
