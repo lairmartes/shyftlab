@@ -13,5 +13,5 @@ public interface StudentService {
 
     List<Student> listAllStudents();
 
-    void removeStudent(long id);
+    void removeStudentById(long id);
 }

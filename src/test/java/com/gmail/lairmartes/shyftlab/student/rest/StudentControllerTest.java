@@ -117,7 +117,7 @@ class StudentControllerTest {
             mvc.perform(delete("/students/1"))
                     .andExpect(status().isOk());
 
-            verify(studentService, times(1)).removeStudent(1L);
+            verify(studentService, times(1)).removeStudentById(1L);
         }
 
         @Test
@@ -126,7 +126,7 @@ class StudentControllerTest {
             mvc.perform(delete("/students/"))
                     .andExpect(status().is4xxClientError());
 
-            verify(studentService, times(0)).removeStudent(anyLong());
+            verify(studentService, times(0)).removeStudentById(anyLong());
         }
     }
 

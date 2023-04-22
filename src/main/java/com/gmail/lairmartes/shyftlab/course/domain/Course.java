@@ -11,7 +11,7 @@ public class Course {
 
     private long id;
 
-    @NotBlank(message = "Provide a name for the course")
+    @NotBlank(message = "Provide a name for the course.")
     private String name;
 
     public com.gmail.lairmartes.shyftlab.course.entity.Course toEntity() {

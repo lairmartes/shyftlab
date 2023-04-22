@@ -154,26 +154,19 @@ class StudentServiceImplTest {
         }
     }
 
-    @Nested
-    class ListAllStudents {
+    @Test
+    void listAllStudents() {
 
-        @Test
-        void whenServiceIsCalled_thenFetchesDataFromRepository() {
+        studentService.listAllStudents();
 
-            studentService.listAllStudents();
-
-            verify(studentRepository, times(1)).findAll();
-        }
+        verify(studentRepository, times(1)).findAll();
     }
 
-    @Nested
-    class RemoveStudent {
+    @Test
+    void removeStudent() {
 
-        @Test
-        void whenServiceIsCalled_thenRemovesDataFromRepositoryWithIdProvided() {
-            studentService.removeStudent(298239L);
+        studentService.removeStudentById(298239L);
 
-            verify(studentRepository, times(1)).deleteById(298239L);
-        }
+        verify(studentRepository, times(1)).deleteById(298239L);
     }
 }
