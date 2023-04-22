@@ -30,8 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = StudentController.class)
 class StudentControllerTest {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     @MockBean
     private StudentService studentService;
 
@@ -109,7 +107,7 @@ class StudentControllerTest {
     }
 
     @Nested
-    class RemoveStudent {
+    class RemoveStudentById {
 
         @Test
         void whenProvidesId_thenCallsRemoveService() throws Exception {
