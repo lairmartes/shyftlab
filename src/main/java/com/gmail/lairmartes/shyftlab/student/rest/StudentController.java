@@ -2,14 +2,18 @@ package com.gmail.lairmartes.shyftlab.student.rest;
 
 import com.gmail.lairmartes.shyftlab.student.rest.dto.StudentDTO;
 import com.gmail.lairmartes.shyftlab.student.service.StudentService;
+import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/students")
 @AllArgsConstructor
 public class StudentController {
 
@@ -18,6 +22,16 @@ public class StudentController {
     @PostMapping("/")
     public StudentDTO addStudent(@RequestBody StudentDTO newStudent) {
         return StudentDTO.fromDomain(studentService.addStudent(newStudent.toDomain()));
+    }
+
+    @GetMapping("/")
+    public List<StudentDTO> listAllStudents() {
+        return studentService.listAllStudents().stream().map(StudentDTO::fromDomain).collect(Collectors.toList());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 }

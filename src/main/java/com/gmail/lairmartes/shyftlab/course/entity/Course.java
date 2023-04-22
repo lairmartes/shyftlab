@@ -3,16 +3,15 @@ package com.gmail.lairmartes.shyftlab.course.entity;
 import com.gmail.lairmartes.shyftlab.result.entity.Result;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "courses")
 public class Course {

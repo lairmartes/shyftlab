@@ -5,15 +5,14 @@ import com.gmail.lairmartes.shyftlab.student.entity.Student;
 import com.gmail.lairmartes.shyftlab.result.enums.Score;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
-@Getter
-@Setter
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "results")
 public class Result {

@@ -5,7 +5,11 @@ import jakarta.validation.Valid;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface StudentService {
     Student addStudent(@NonNull @Valid Student newStudent);
+
+    List<Student> listAllStudents();
 }
