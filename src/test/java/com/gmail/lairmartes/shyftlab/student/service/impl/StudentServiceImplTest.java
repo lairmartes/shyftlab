@@ -28,7 +28,7 @@ class StudentServiceImplTest {
     private Clock mockClock;
 
     @MockBean
-    private StudentRepository mockStudentRepository;
+    private StudentRepository studentRepository;
 
     @Autowired
     private StudentServiceImpl studentService;
@@ -65,7 +65,7 @@ class StudentServiceImplTest {
                     .toList()
                     .containsAll(expectedMessages));
 
-            verify(mockStudentRepository, never()).save(any());
+            verify(studentRepository, never()).save(any());
         }
 
         @Test
@@ -88,7 +88,7 @@ class StudentServiceImplTest {
                     .toList()
                     .contains("Provide a valid email."));
 
-            verify(mockStudentRepository, never()).save(any());
+            verify(studentRepository, never()).save(any());
         }
 
         @Test
@@ -111,7 +111,7 @@ class StudentServiceImplTest {
                     .toList()
                     .contains(EXPECTED_MINIMUM_AGE_ERROR_MESSAGE));
 
-            verify(mockStudentRepository, never()).save(any());
+            verify(studentRepository, never()).save(any());
         }
 
         @Test
@@ -144,13 +144,36 @@ class StudentServiceImplTest {
                     .email("naruto.uzumaki@adm.konoha.gov.lv")
                     .build();
 
-            when(mockStudentRepository.save(validStudent.toEntity())).thenReturn(mockResultEntity);
+            when(studentRepository.save(validStudent.toEntity())).thenReturn(mockResultEntity);
 
             Student actualResult = studentService.addStudent(validStudent);
 
-            verify(mockStudentRepository, times(1)).save(validStudent.toEntity());
+            verify(studentRepository, times(1)).save(validStudent.toEntity());
 
             assertEquals(expectedResult, actualResult);
+        }
+    }
+
+    @Nested
+    class ListAllStudents {
+
+        @Test
+        void whenServiceIsCalled_thenFetchesDataFromRepository() {
+
+            studentService.listAllStudents();
+
+            verify(studentRepository, times(1)).findAll();
+        }
+    }
+
+    @Nested
+    class RemoveStudent {
+
+        @Test
+        void whenServiceIsCalled_thenRemovesDataFromRepositoryWithIdProvided() {
+            studentService.removeStudent(298239L);
+
+            verify(studentRepository, times(1)).deleteById(298239L);
         }
     }
 }

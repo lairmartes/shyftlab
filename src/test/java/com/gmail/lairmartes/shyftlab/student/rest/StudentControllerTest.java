@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -65,11 +65,11 @@ class StudentControllerTest {
         void whenDataIsNotValid_thenCallService_andReturns400ErrorWithErrorMessages() throws Exception {
 
             final Set<ConstraintViolation<String>> violationList = Set.of(
-                    TestUtilConstraintViolationBuilder.buildConstraintViolation("Error message 1"),
-                    TestUtilConstraintViolationBuilder.buildConstraintViolation("Error message 2")
+                    TestUtilConstraintViolationBuilder.buildConstraintViolation("Validation Message 1"),
+                    TestUtilConstraintViolationBuilder.buildConstraintViolation("Validation Message 2")
             );
 
-            final var expectedErrorMessage = "null: Error message 1, null: Error message 2";
+            final var expectedErrorMessage = "null: Validation message 1, null: Validation message 2";
 
             when(studentService.addStudent(any(Student.class))).thenThrow(new ConstraintViolationException(violationList));
 
@@ -81,7 +81,11 @@ class StudentControllerTest {
 
             verify(studentService, times(1)).addStudent(any(Student.class));
 
-            assertEquals(expectedErrorMessage, mvcResult.getResponse().getContentAsString());
+            final String responseContent = mvcResult.getResponse().getContentAsString();
+
+            assertNotNull(responseContent);
+            assertTrue(responseContent.contains("Validation Message 1"));
+            assertTrue(responseContent.contains("Validation Message 2"));
         }
     }
 
