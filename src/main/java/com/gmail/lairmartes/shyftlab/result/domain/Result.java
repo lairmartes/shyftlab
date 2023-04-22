@@ -1,8 +1,8 @@
-package com.gmail.lairmartes.shyftlab.domain;
+package com.gmail.lairmartes.shyftlab.result.domain;
 
-import com.gmail.lairmartes.shyftlab.entity.Course;
-import com.gmail.lairmartes.shyftlab.entity.Student;
-import com.gmail.lairmartes.shyftlab.enums.Score;
+import com.gmail.lairmartes.shyftlab.course.entity.Course;
+import com.gmail.lairmartes.shyftlab.student.entity.Student;
+import com.gmail.lairmartes.shyftlab.result.enums.Score;
 import lombok.*;
 
 @Getter
@@ -22,15 +22,15 @@ public class Result {
     @NonNull
     private Score score;
 
-    public com.gmail.lairmartes.shyftlab.entity.Result toEntity() {
-        return com.gmail.lairmartes.shyftlab.entity.Result.builder()
+    public com.gmail.lairmartes.shyftlab.result.entity.Result toEntity() {
+        return com.gmail.lairmartes.shyftlab.result.entity.Result.builder()
                 .student(this.student)
                 .course(this.course)
                 .score(this.score)
                 .build();
     }
 
-    public static Result fromEntity(com.gmail.lairmartes.shyftlab.entity.Result entity) {
+    public static Result fromEntity(com.gmail.lairmartes.shyftlab.result.entity.Result entity) {
         return Result.builder()
                 .student(entity.getStudent())
                 .course(entity.getCourse())

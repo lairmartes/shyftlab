@@ -1,12 +1,10 @@
-package com.gmail.lairmartes.shyftlab.service.impl;
+package com.gmail.lairmartes.shyftlab.student.service.impl;
 
-import com.gmail.lairmartes.shyftlab.entity.Student;
-import com.gmail.lairmartes.shyftlab.repository.StudentRepository;
+import com.gmail.lairmartes.shyftlab.student.entity.Student;
+import com.gmail.lairmartes.shyftlab.student.repository.StudentRepository;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

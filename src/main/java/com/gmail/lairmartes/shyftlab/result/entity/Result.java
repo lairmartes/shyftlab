@@ -1,6 +1,8 @@
-package com.gmail.lairmartes.shyftlab.entity;
+package com.gmail.lairmartes.shyftlab.result.entity;
 
-import com.gmail.lairmartes.shyftlab.enums.Score;
+import com.gmail.lairmartes.shyftlab.course.entity.Course;
+import com.gmail.lairmartes.shyftlab.student.entity.Student;
+import com.gmail.lairmartes.shyftlab.result.enums.Score;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;

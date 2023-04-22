@@ -1,6 +1,6 @@
-package com.gmail.lairmartes.shyftlab.domain;
+package com.gmail.lairmartes.shyftlab.student.domain;
 
-import com.gmail.lairmartes.shyftlab.validator.MinimumAge;
+import com.gmail.lairmartes.shyftlab.common.validator.MinimumAge;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -24,8 +24,8 @@ public class Student {
     @Email(message = "Provide a valid email.")
     private String email;
 
-    public com.gmail.lairmartes.shyftlab.entity.Student toEntity() {
-        return com.gmail.lairmartes.shyftlab.entity.Student.builder()
+    public com.gmail.lairmartes.shyftlab.student.entity.Student toEntity() {
+        return com.gmail.lairmartes.shyftlab.student.entity.Student.builder()
                 .firstName(this.firstName)
                 .familyName(this.familyName)
                 .birthDate(this.birthDate)
@@ -33,7 +33,7 @@ public class Student {
                 .build();
     }
 
-    public static Student fromEntity(com.gmail.lairmartes.shyftlab.entity.Student entity) {
+    public static Student fromEntity(com.gmail.lairmartes.shyftlab.student.entity.Student entity) {
         return Student.builder()
                 .id(entity.getId())
                 .firstName(entity.getFirstName())

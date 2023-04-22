@@ -1,4 +1,4 @@
-package com.gmail.lairmartes.shyftlab.validator;
+package com.gmail.lairmartes.shyftlab.common.validator;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

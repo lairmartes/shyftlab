@@ -1,4 +1,4 @@
-package com.gmail.lairmartes.shyftlab.exception;
+package com.gmail.lairmartes.shyftlab.common.exception;
 
 public class InvalidDataException extends Throwable {
 

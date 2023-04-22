@@ -1,7 +1,7 @@
-package com.gmail.lairmartes.shyftlab.entity;
+package com.gmail.lairmartes.shyftlab.student.entity;
 
+import com.gmail.lairmartes.shyftlab.result.entity.Result;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;

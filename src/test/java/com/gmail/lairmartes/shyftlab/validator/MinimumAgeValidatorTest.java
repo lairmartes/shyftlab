@@ -1,5 +1,7 @@
 package com.gmail.lairmartes.shyftlab.validator;
 
+import com.gmail.lairmartes.shyftlab.common.validator.MinimumAge;
+import com.gmail.lairmartes.shyftlab.common.validator.MinimumAgeValidator;
 import com.gmail.lairmartes.shyftlab.util.TestUtilLocalValidatorFactoryBean;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintViolation;

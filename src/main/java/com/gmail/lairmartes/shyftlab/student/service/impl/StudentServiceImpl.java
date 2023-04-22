@@ -1,8 +1,8 @@
-package com.gmail.lairmartes.shyftlab.service.impl;
+package com.gmail.lairmartes.shyftlab.student.service.impl;
 
-import com.gmail.lairmartes.shyftlab.entity.Student;
-import com.gmail.lairmartes.shyftlab.repository.StudentRepository;
-import com.gmail.lairmartes.shyftlab.service.StudentService;
+import com.gmail.lairmartes.shyftlab.student.entity.Student;
+import com.gmail.lairmartes.shyftlab.student.repository.StudentRepository;
+import com.gmail.lairmartes.shyftlab.student.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
