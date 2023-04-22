@@ -15,8 +15,6 @@ import java.util.Set;
 @Entity
 public class Student {
 
-    //include logs in service
-
     @Id
     @GeneratedValue
     private long id;

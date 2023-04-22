@@ -1,6 +1,6 @@
 package com.gmail.lairmartes.shyftlab.student.service.impl;
 
-import com.gmail.lairmartes.shyftlab.student.entity.Student;
+import com.gmail.lairmartes.shyftlab.student.domain.Student;
 import com.gmail.lairmartes.shyftlab.student.repository.StudentRepository;
 import com.gmail.lairmartes.shyftlab.student.service.StudentService;
 import jakarta.validation.Valid;
@@ -19,6 +19,6 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student addStudent(@NonNull @Valid Student newStudent) {
 
-        return studentRepository.save(newStudent);
+        return Student.fromEntity(studentRepository.save(newStudent.toEntity()));
     }
 }

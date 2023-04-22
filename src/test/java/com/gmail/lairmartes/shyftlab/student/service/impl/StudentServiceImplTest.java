@@ -1,6 +1,6 @@
 package com.gmail.lairmartes.shyftlab.student.service.impl;
 
-import com.gmail.lairmartes.shyftlab.student.entity.Student;
+import com.gmail.lairmartes.shyftlab.student.domain.Student;
 import com.gmail.lairmartes.shyftlab.student.repository.StudentRepository;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,8 +60,31 @@ class StudentServiceImplTest {
                 .email("naruto.uzumaki@adm.konoha.gov.br")
                 .build();
 
-        studentService.addStudent(validStudent);
+        final com.gmail.lairmartes.shyftlab.student.entity.Student mockResultEntity =
+                com.gmail.lairmartes.shyftlab.student.entity.Student
+                        .builder()
+                        .id(10L)
+                        .firstName("Naruto")
+                        .familyName("Uzumaki")
+                        .birthDate(LocalDate.of(1995, 10, 10))
+                        .email("naruto.uzumaki@adm.konoha.gov.br")
+                        .build();
 
-        verify(mockStudentRepository, times(1)).save(validStudent);
+        final Student expectedResult = Student
+                .builder()
+                .id(10L)
+                .firstName("Naruto")
+                .familyName("Uzumaki")
+                .birthDate(LocalDate.of(1995, 10, 10))
+                .email("naruto.uzumaki@adm.konoha.gov.br")
+                .build();
+
+        when(mockStudentRepository.save(validStudent.toEntity())).thenReturn(mockResultEntity);
+
+        Student actualResult = studentService.addStudent(validStudent);
+
+        verify(mockStudentRepository, times(1)).save(validStudent.toEntity());
+
+        assertEquals(expectedResult, actualResult);
     }
 }

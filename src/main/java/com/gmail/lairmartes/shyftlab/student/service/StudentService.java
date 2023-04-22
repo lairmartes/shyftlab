@@ -1,6 +1,6 @@
 package com.gmail.lairmartes.shyftlab.student.service;
 
-import com.gmail.lairmartes.shyftlab.student.entity.Student;
+import com.gmail.lairmartes.shyftlab.student.domain.Student;
 import jakarta.validation.Valid;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;

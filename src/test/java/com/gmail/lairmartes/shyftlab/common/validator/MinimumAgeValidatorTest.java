@@ -1,4 +1,4 @@
-package com.gmail.lairmartes.shyftlab.validator;
+package com.gmail.lairmartes.shyftlab.common.validator;
 
 import com.gmail.lairmartes.shyftlab.common.validator.MinimumAge;
 import com.gmail.lairmartes.shyftlab.common.validator.MinimumAgeValidator;
@@ -70,6 +70,14 @@ class MinimumAgeValidatorTest {
         final POJOTest objectToBeValidated = POJOTest.builder().birthDate(date15YearsFromNowMock).build();
 
         assertTrue(validator.validate(objectToBeValidated).isEmpty());
+    }
+
+    @Test
+    void isValid_whenBirthDayIsNull_thenValidate() {
+
+        final POJOTest objectToBeValidated = POJOTest.builder().birthDate(null).build();
+
+        assertFalse(validator.validate(objectToBeValidated).isEmpty());
     }
 
     @Test

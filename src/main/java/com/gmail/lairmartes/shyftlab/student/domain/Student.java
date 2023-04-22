@@ -3,6 +3,7 @@ package com.gmail.lairmartes.shyftlab.student.domain;
 import com.gmail.lairmartes.shyftlab.common.validator.MinimumAge;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.validation.annotation.Validated;
 
@@ -19,6 +20,7 @@ public class Student {
     private String firstName;
     @NotBlank(message = "Provide a family name.")
     private String familyName;
+    @NotNull(message = "Provide a birth date")
     @MinimumAge(value = 10, message = "Minimum student age must be 10 years old.")
     private LocalDate birthDate;
     @Email(message = "Provide a valid email.")

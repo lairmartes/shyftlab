@@ -24,6 +24,7 @@ public class MinimumAgeValidator implements ConstraintValidator<MinimumAge, Loca
 
     @Override
     public boolean isValid(LocalDate localDate, ConstraintValidatorContext constraintValidatorContext) {
+        if (localDate == null) return false;
         final LocalDate now = LocalDate.now(clock);
         return ChronoUnit.YEARS.between(localDate, now) >= this.minimumAge;
     }
