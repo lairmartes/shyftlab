@@ -5,6 +5,7 @@ import com.gmail.lairmartes.shyftlab.student.repository.StudentRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,113 +41,116 @@ class StudentServiceImplTest {
         when(mockClock.instant()).thenReturn(fixedTimeForTest.toInstant(ZoneOffset.UTC));
     }
 
-    @Test
-    void addStudent_whenFieldsAreNotProvided_theValidatesFields_andThrowsConstraintViolationException() {
-        final Student invalidStudentTest = Student.builder().build();
+    @Nested
+    class AddStudent {
+        @Test
+        void whenFieldsAreNotProvided_theValidatesFields_andThrowsConstraintViolationException() {
+            final Student invalidStudentTest = Student.builder().build();
 
-        final List<String> expectedMessages = List.of(
-                "Provide a first name.",
-                "Provide a family name.",
-                "Provide a birth date.",
-                EXPECTED_MINIMUM_AGE_ERROR_MESSAGE,
-                "Provide a valid email."
-        );
+            final List<String> expectedMessages = List.of(
+                    "Provide a first name.",
+                    "Provide a family name.",
+                    "Provide a birth date.",
+                    EXPECTED_MINIMUM_AGE_ERROR_MESSAGE,
+                    "Provide a valid email."
+            );
 
-        ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
-                () ->  studentService.addStudent(invalidStudentTest));
+            ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
+                    () -> studentService.addStudent(invalidStudentTest));
 
-        assertFalse(exception.getConstraintViolations().isEmpty());
-        assertTrue(exception.getConstraintViolations()
-                .stream()
-                .map(ConstraintViolation::getMessage)
-                .toList()
-                .containsAll(expectedMessages));
+            assertFalse(exception.getConstraintViolations().isEmpty());
+            assertTrue(exception.getConstraintViolations()
+                    .stream()
+                    .map(ConstraintViolation::getMessage)
+                    .toList()
+                    .containsAll(expectedMessages));
 
-        verify(mockStudentRepository, never()).save(any());
-    }
+            verify(mockStudentRepository, never()).save(any());
+        }
 
-    @Test
-    void addStudent_whenEmailIsInvalid_thenThrowsViolationException() {
+        @Test
+        void whenEmailIsInvalid_thenThrowsViolationException() {
 
-        final Student studentWithInvalidEmail = Student
-                .builder()
-                .firstName("Naruto")
-                .familyName("Uzumaki")
-                .birthDate(LocalDate.of(1995, 10, 10))
-                .email("naruto.uzumaki_adm.konoha.gov.br")
-                .build();
+            final Student studentWithInvalidEmail = Student
+                    .builder()
+                    .firstName("Naruto")
+                    .familyName("Uzumaki")
+                    .birthDate(LocalDate.of(1995, 10, 10))
+                    .email("naruto.uzumaki_adm.konoha.gov.lv")
+                    .build();
 
-        ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
-                () ->  studentService.addStudent(studentWithInvalidEmail));
+            ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
+                    () -> studentService.addStudent(studentWithInvalidEmail));
 
-        assertTrue(exception.getConstraintViolations()
-                .stream()
-                .map(ConstraintViolation::getMessage)
-                .toList()
-                .contains("Provide a valid email."));
+            assertTrue(exception.getConstraintViolations()
+                    .stream()
+                    .map(ConstraintViolation::getMessage)
+                    .toList()
+                    .contains("Provide a valid email."));
 
-        verify(mockStudentRepository, never()).save(any());
-    }
+            verify(mockStudentRepository, never()).save(any());
+        }
 
-    @Test
-    void addStudent_whenAgeIsNotMinimumAllowed_thenThrowsViolationException() {
+        @Test
+        void whenAgeIsNotMinimumAllowed_thenThrowsViolationException() {
 
-        final Student studentWithInvalidEmail = Student
-                .builder()
-                .firstName("Naruto")
-                .familyName("Uzumaki")
-                .birthDate(LocalDate.of(2013, 4, 22))
-                .email("naruto.uzumaki@adm.konoha.gov.br")
-                .build();
+            final Student studentWithInvalidEmail = Student
+                    .builder()
+                    .firstName("Naruto")
+                    .familyName("Uzumaki")
+                    .birthDate(LocalDate.of(2013, 4, 22))
+                    .email("naruto.uzumaki@adm.konoha.gov.lv")
+                    .build();
 
-        ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
-                () ->  studentService.addStudent(studentWithInvalidEmail));
+            ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
+                    () -> studentService.addStudent(studentWithInvalidEmail));
 
-        assertTrue(exception.getConstraintViolations()
-                .stream()
-                .map(ConstraintViolation::getMessage)
-                .toList()
-                .contains(EXPECTED_MINIMUM_AGE_ERROR_MESSAGE));
+            assertTrue(exception.getConstraintViolations()
+                    .stream()
+                    .map(ConstraintViolation::getMessage)
+                    .toList()
+                    .contains(EXPECTED_MINIMUM_AGE_ERROR_MESSAGE));
 
-        verify(mockStudentRepository, never()).save(any());
-    }
+            verify(mockStudentRepository, never()).save(any());
+        }
 
-    @Test
-    void addStudent_whenStudentIsValid_thenSaveInRepository() {
+        @Test
+        void whenStudentIsValid_thenSaveInRepository() {
 
-        final Student validStudent = Student
-                .builder()
-                .firstName("Naruto")
-                .familyName("Uzumaki")
-                .birthDate(LocalDate.of(1995, 10, 10))
-                .email("naruto.uzumaki@adm.konoha.gov.br")
-                .build();
+            final Student validStudent = Student
+                    .builder()
+                    .firstName("Naruto")
+                    .familyName("Uzumaki")
+                    .birthDate(LocalDate.of(1995, 10, 10))
+                    .email("naruto.uzumaki@adm.konoha.gov.lv")
+                    .build();
 
-        final com.gmail.lairmartes.shyftlab.student.entity.Student mockResultEntity =
-                com.gmail.lairmartes.shyftlab.student.entity.Student
-                        .builder()
-                        .id(10L)
-                        .firstName("Naruto")
-                        .familyName("Uzumaki")
-                        .birthDate(LocalDate.of(1995, 10, 10))
-                        .email("naruto.uzumaki@adm.konoha.gov.br")
-                        .build();
+            final com.gmail.lairmartes.shyftlab.student.entity.Student mockResultEntity =
+                    com.gmail.lairmartes.shyftlab.student.entity.Student
+                            .builder()
+                            .id(10L)
+                            .firstName("Naruto")
+                            .familyName("Uzumaki")
+                            .birthDate(LocalDate.of(1995, 10, 10))
+                            .email("naruto.uzumaki@adm.konoha.gov.lv")
+                            .build();
 
-        final Student expectedResult = Student
-                .builder()
-                .id(10L)
-                .firstName("Naruto")
-                .familyName("Uzumaki")
-                .birthDate(LocalDate.of(1995, 10, 10))
-                .email("naruto.uzumaki@adm.konoha.gov.br")
-                .build();
+            final Student expectedResult = Student
+                    .builder()
+                    .id(10L)
+                    .firstName("Naruto")
+                    .familyName("Uzumaki")
+                    .birthDate(LocalDate.of(1995, 10, 10))
+                    .email("naruto.uzumaki@adm.konoha.gov.lv")
+                    .build();
 
-        when(mockStudentRepository.save(validStudent.toEntity())).thenReturn(mockResultEntity);
+            when(mockStudentRepository.save(validStudent.toEntity())).thenReturn(mockResultEntity);
 
-        Student actualResult = studentService.addStudent(validStudent);
+            Student actualResult = studentService.addStudent(validStudent);
 
-        verify(mockStudentRepository, times(1)).save(validStudent.toEntity());
+            verify(mockStudentRepository, times(1)).save(validStudent.toEntity());
 
-        assertEquals(expectedResult, actualResult);
+            assertEquals(expectedResult, actualResult);
+        }
     }
 }
