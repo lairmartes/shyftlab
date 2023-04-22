@@ -2,6 +2,7 @@ package com.gmail.lairmartes.shyftlab.student.service.impl;
 
 import com.gmail.lairmartes.shyftlab.student.domain.Student;
 import com.gmail.lairmartes.shyftlab.student.repository.StudentRepository;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -38,13 +40,26 @@ class StudentServiceImplTest {
     }
 
     @Test
-    void addStudent_whenStudentIsNotValid_thenThrowsConstraintViolationException() {
+    void addStudent_whenFieldsAreNotProvided_theValidatesFields_andThrowsConstraintViolationException() {
         final Student invalidStudentTest = Student.builder().build();
+
+        final List<String> expectedMessages = List.of(
+                "Provide a first name.",
+                "Provide a family name.",
+                "Provide a birth date.",
+                "Minimum student age must be 10 years old.",
+                "Provide a valid email."
+        );
 
         ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
                 () ->  studentService.addStudent(invalidStudentTest));
 
         assertFalse(exception.getConstraintViolations().isEmpty());
+        assertTrue(exception.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .toList()
+                .containsAll(expectedMessages));
 
         verify(mockStudentRepository, never()).save(any());
     }

@@ -20,9 +20,10 @@ public class Student {
     private String firstName;
     @NotBlank(message = "Provide a family name.")
     private String familyName;
-    @NotNull(message = "Provide a birth date")
+    @NotNull(message = "Provide a birth date.")
     @MinimumAge(value = 10, message = "Minimum student age must be 10 years old.")
     private LocalDate birthDate;
+    @NotNull(message = "Provide a valid email.")
     @Email(message = "Provide a valid email.")
     private String email;
 
