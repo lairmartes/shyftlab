@@ -3,7 +3,11 @@ package com.gmail.lairmartes.shyftlab.student.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmail.lairmartes.shyftlab.student.domain.Student;
 import com.gmail.lairmartes.shyftlab.student.service.StudentService;
-import com.gmail.lairmartes.shyftlab.util.TestFileLoader;
+import com.gmail.lairmartes.shyftlab.util.TestUtilConstraintViolationBuilder;
+import com.gmail.lairmartes.shyftlab.util.TestUtilFileLoader;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -11,12 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = StudentController.class)
@@ -30,26 +38,93 @@ class StudentControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @Test
-    void addStudent_whenDataAreValid_thenCallsService_andReturnStudentIncluded() throws Exception {
+    @Nested
+    class AddStudent {
 
-        when(studentService.addStudent(getStudentRequest())).thenReturn(getStudentResponse());
+        @Test
+        void whenDataAreValid_thenCallsService_andReturnStudentIncluded() throws Exception {
 
-        String expectedResponse = TestFileLoader.loadTestFile("/students/validStudentResponse.json");
+            when(studentService.addStudent(getStudentRequest())).thenReturn(getStudentResponse());
 
-        String addStudentRequestBody = TestFileLoader.loadTestFile("/students/validStudentRequest.json");
+            final var expectedResponse = TestUtilFileLoader.loadTestFile("/students/validStudentResponse.json");
 
-        MvcResult mvcResponse = mvc.perform(post("/students/")
-                .contentType("application/json")
-                .content(addStudentRequestBody))
-                .andExpect(status().isOk())
-                .andReturn();
+            final var addStudentRequestBody = TestUtilFileLoader.loadTestFile("/students/validStudentRequest.json");
 
-        verify(studentService, times(1)).addStudent(getStudentRequest());
+            var mvcResult = mvc.perform(post("/students/")
+                            .contentType("application/json")
+                            .content(addStudentRequestBody))
+                    .andExpect(status().isOk())
+                    .andReturn();
 
-        JSONAssert.assertEquals(expectedResponse, mvcResponse.getResponse().getContentAsString(), JSONCompareMode.STRICT);
+            verify(studentService, times(1)).addStudent(getStudentRequest());
+
+            JSONAssert.assertEquals(expectedResponse, mvcResult.getResponse().getContentAsString(), JSONCompareMode.STRICT);
+        }
+
+        @Test
+        void whenDataIsNotValid_thenCallService_andReturns400ErrorWithErrorMessages() throws Exception {
+
+            final Set<ConstraintViolation<String>> violationList = Set.of(
+                    TestUtilConstraintViolationBuilder.buildConstraintViolation("Error message 1"),
+                    TestUtilConstraintViolationBuilder.buildConstraintViolation("Error message 2")
+            );
+
+            final var expectedErrorMessage = "null: Error message 1, null: Error message 2";
+
+            when(studentService.addStudent(any(Student.class))).thenThrow(new ConstraintViolationException(violationList));
+
+            var mvcResult = mvc.perform(post("/students/")
+                            .contentType("application/json")
+                            .content("{ }"))
+                    .andExpect(status().is4xxClientError())
+                    .andReturn();
+
+            verify(studentService, times(1)).addStudent(any(Student.class));
+
+            assertEquals(expectedErrorMessage, mvcResult.getResponse().getContentAsString());
+        }
     }
 
+    @Nested
+    class ListAllStudents {
+        @Test
+        void whenCalls_thenReturnStudentList() throws Exception {
+
+            when(studentService.listAllStudents()).thenReturn(listAllStudentResponse());
+
+            var mvcResult = mvc.perform(get("/students/"))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            final var expectedResponse = TestUtilFileLoader.loadTestFile("/students/allStudentsList.json");
+
+            verify(studentService, times(1)).listAllStudents();
+
+            JSONAssert.assertEquals(expectedResponse, mvcResult.getResponse().getContentAsString(), JSONCompareMode.STRICT);
+        }
+    }
+
+    @Nested
+    class RemoveStudent {
+
+        @Test
+        void whenProvidesId_thenCallsRemoveService() throws Exception {
+
+            mvc.perform(delete("/students/1"))
+                    .andExpect(status().isOk());
+
+            verify(studentService, times(1)).removeStudent(1L);
+        }
+
+        @Test
+        void whenDoesNotProvideId_thenReturns400Error_andDoesNotCallService() throws Exception {
+
+            mvc.perform(delete("/students/"))
+                    .andExpect(status().is4xxClientError());
+
+            verify(studentService, times(0)).removeStudent(anyLong());
+        }
+    }
 
     private Student getStudentResponse() {
         return Student
@@ -58,7 +133,7 @@ class StudentControllerTest {
                 .firstName("Shikamaru")
                 .familyName("Nara")
                 .birthDate(LocalDate.of(1993,8,23))
-                .email("shikamaru.nara@adm.konoha.gov.br")
+                .email("shikamaru.nara@adm.konoha.gov.lv")
                 .build();
     }
 
@@ -68,7 +143,20 @@ class StudentControllerTest {
                 .firstName("Shikamaru")
                 .familyName("Nara")
                 .birthDate(LocalDate.of(1993,8,23))
-                .email("shikamaru.nara@adm.konoha.gov.br")
+                .email("shikamaru.nara@adm.konoha.gov.lv")
                 .build();
+    }
+
+    private List<Student> listAllStudentResponse() {
+        return List.of(
+                getStudentResponse(),
+                Student
+                .builder()
+                .id(2L)
+                .firstName("Sasuke")
+                .familyName("Uchiha")
+                .birthDate(LocalDate.of(1993,7,17))
+                .email("sasukeuchiha1993@konohamail.com")
+                .build());
     }
 }

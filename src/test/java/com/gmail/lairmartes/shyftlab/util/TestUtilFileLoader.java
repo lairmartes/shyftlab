@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class TestFileLoader {
+public class TestUtilFileLoader {
 
     public static String loadTestFile(final String path) throws IOException {
-        Class<TestFileLoader> clazz = TestFileLoader.class;
+        Class<TestUtilFileLoader> clazz = TestUtilFileLoader.class;
 
         InputStream is = clazz.getResourceAsStream(path);
 

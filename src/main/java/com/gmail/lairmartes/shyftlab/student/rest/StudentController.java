@@ -3,6 +3,7 @@ package com.gmail.lairmartes.shyftlab.student.rest;
 import com.gmail.lairmartes.shyftlab.student.rest.dto.StudentDTO;
 import com.gmail.lairmartes.shyftlab.student.service.StudentService;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
-    public void removeStudent(@PathVariable("id") Long id) {
+    public void removeStudent(@PathVariable("id") @NotNull Long id) {
         studentService.removeStudent(id);
     }
 
