@@ -55,7 +55,7 @@ class StudentServiceImplTest {
                     "Provide a valid email."
             );
 
-            ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
+            final ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
                     () -> studentService.addStudent(invalidStudentTest));
 
             assertFalse(exception.getConstraintViolations().isEmpty());

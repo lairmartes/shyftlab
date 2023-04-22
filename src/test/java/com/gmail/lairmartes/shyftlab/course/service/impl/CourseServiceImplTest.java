@@ -56,7 +56,7 @@ class CourseServiceImplTest {
 
             final List<String> expectedMessages = List.of("Provide a name for the course.");
 
-            ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
+            final ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
                     () -> courseService.addCourse(invalidCourse));
 
             assertFalse(exception.getConstraintViolations().isEmpty());

@@ -1,30 +1,25 @@
 package com.gmail.lairmartes.shyftlab.result.service.impl;
 
-import com.gmail.lairmartes.shyftlab.common.validator.MinimumAgeValidator;
+import com.gmail.lairmartes.shyftlab.common.exception.RecordNotFoundException;
 import com.gmail.lairmartes.shyftlab.course.entity.Course;
 import com.gmail.lairmartes.shyftlab.course.repository.CourseRepository;
 import com.gmail.lairmartes.shyftlab.result.domain.Result;
 import com.gmail.lairmartes.shyftlab.student.entity.Student;
 import com.gmail.lairmartes.shyftlab.student.repository.StudentRepository;
-import com.gmail.lairmartes.shyftlab.util.TestUtilLocalValidatorFactoryBean;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.Validator;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.Clock;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class ResultServiceImplIntegrationTest {
@@ -40,6 +35,12 @@ class ResultServiceImplIntegrationTest {
 
     @Autowired
     private ResultServiceImpl resultService;
+
+    @BeforeEach
+    public void cleanRepositories() {
+        studentRepository.deleteAll();
+        courseRepository.deleteAll();
+    }
 
     private List<Student> createStudents() {
 
@@ -110,6 +111,71 @@ class ResultServiceImplIntegrationTest {
             final var expectedListResult = List.of( savedResult );
 
             assertEquals(expectedListResult, resultService.listAllResults());
+        }
+
+        @Test
+        void whenFieldsAreNotProvided_theValidatesFields_andThrowsConstraintViolationException() {
+            final Result invalidResultTest = Result.builder().build();
+
+            final List<String> expectedMessages = List.of(
+                    "Student ID is mandatory.",
+                    "Course ID is mandatory.",
+                    "Provide a score A, B, C, D, E or F."
+            );
+
+            final ConstraintViolationException exception = assertThrows(ConstraintViolationException.class,
+                    () -> resultService.addResult(invalidResultTest));
+
+            assertFalse(exception.getConstraintViolations().isEmpty());
+            assertTrue(exception.getConstraintViolations()
+                    .stream()
+                    .map(ConstraintViolation::getMessage)
+                    .toList()
+                    .containsAll(expectedMessages));
+
+            assertTrue(resultService.listAllResults().isEmpty());
+        }
+
+        @Test
+        void whenStudentDoesNotExist_thenThrowsRecordNotFoundException_andReturnsCorrectMessage() {
+
+            var databaseCourseList = createCourses();
+
+            final Result newResult = Result
+                    .builder()
+                    .studentId(10390L)
+                    .courseId(databaseCourseList.get(0).getId())
+                    .score("B")
+                    .build();
+
+            final RecordNotFoundException recordNotFoundException = assertThrows(RecordNotFoundException.class,
+                    () -> resultService.addResult(newResult) );
+
+            final var expectedErrorMessage = "Student with id 10390 not found.";
+
+            assertEquals(expectedErrorMessage, recordNotFoundException.getMessage());
+
+        }
+
+        @Test
+        void whenCourseDoesNotExist_thenThrowsRecordNotFoundException_andReturnsCorrectMessage() {
+
+            var databaseStudentList = createStudents();
+
+            final Result newResult = Result
+                    .builder()
+                    .studentId(databaseStudentList.get(0).getId())
+                    .courseId(20985L)
+                    .score("B")
+                    .build();
+
+            final RecordNotFoundException recordNotFoundException = assertThrows(RecordNotFoundException.class,
+                    () -> resultService.addResult(newResult) );
+
+            final var expectedErrorMessage = "Course with id 20985 not found.";
+
+            assertEquals(expectedErrorMessage, recordNotFoundException.getMessage());
+
         }
     }
 
