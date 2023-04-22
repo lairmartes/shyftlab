@@ -2,6 +2,10 @@ package com.gmail.lairmartes.shyftlab.course.rest;
 
 import com.gmail.lairmartes.shyftlab.course.domain.Course;
 import com.gmail.lairmartes.shyftlab.course.service.CourseService;
+import com.gmail.lairmartes.shyftlab.util.TestUtilConstraintViolationBuilder;
+import com.gmail.lairmartes.shyftlab.util.TestUtilFileLoader;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -11,8 +15,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = CourseController.class)
@@ -50,9 +60,72 @@ class CourseControllerTest {
             JSONAssert.assertEquals(expectedResponse, mvcResult.getResponse().getContentAsString(), JSONCompareMode.STRICT);
         }
 
+        @Test
+        void whenDataIsNotValid_thenCallService_andReturns400ErrorWithErrorMessages() throws Exception {
+
+            final Set<ConstraintViolation<String>> violationList = Set.of(
+                    TestUtilConstraintViolationBuilder.buildConstraintViolation("Validation Message 1"),
+                    TestUtilConstraintViolationBuilder.buildConstraintViolation("Validation Message 2")
+            );
+
+            final var expectedErrorMessage = "null: Validation message 1, null: Validation message 2";
+
+            when(courseService.addCourse(any(Course.class))).thenThrow(new ConstraintViolationException(violationList));
+
+            var mvcResult = mvc.perform(post("/courses/")
+                            .contentType("application/json")
+                            .content("{ }"))
+                    .andExpect(status().is4xxClientError())
+                    .andReturn();
+
+            verify(courseService, times(1)).addCourse(any(Course.class));
+
+            final String responseContent = mvcResult.getResponse().getContentAsString();
+
+            assertNotNull(responseContent);
+            assertTrue(responseContent.contains("Validation Message 1"));
+            assertTrue(responseContent.contains("Validation Message 2"));
+        }
+
     }
 
     @Test
-    void listAllCourses() {
+    void listAllCourses() throws Exception {
+
+        when(courseService.listAllCourses()).thenReturn(List.of(
+                Course.builder().id(234904L).name("Course 1").build(),
+                Course.builder().id(839289L).name("Course 2").build()
+        ));
+
+        var mvcResult = mvc.perform(get("/courses/"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        final var expectedResponse = "[ { 'id':234904, 'name':'Course 1' }, { 'id':839289, 'name':'Course 2' } ]";
+
+        verify(courseService, times(1)).listAllCourses();
+
+        JSONAssert.assertEquals(expectedResponse, mvcResult.getResponse().getContentAsString(), JSONCompareMode.STRICT);
+    }
+
+    @Nested
+    class RemoveCourseById {
+        @Test
+        void whenProvidesId_thenCallsRemoveService() throws Exception {
+
+            mvc.perform(delete("/courses/32748"))
+                    .andExpect(status().isOk());
+
+            verify(courseService, times(1)).removeCourseById(32748L);
+        }
+
+        @Test
+        void whenDoesNotProvideId_thenReturns400Error_andDoesNotCallService() throws Exception {
+
+            mvc.perform(delete("/students/"))
+                    .andExpect(status().is4xxClientError());
+
+            verify(courseService, times(0)).removeCourseById(anyLong());
+        }
     }
 }

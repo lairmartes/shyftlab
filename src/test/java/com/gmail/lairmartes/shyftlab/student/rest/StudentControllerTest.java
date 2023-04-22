@@ -112,10 +112,10 @@ class StudentControllerTest {
         @Test
         void whenProvidesId_thenCallsRemoveService() throws Exception {
 
-            mvc.perform(delete("/students/1"))
+            mvc.perform(delete("/students/34894"))
                     .andExpect(status().isOk());
 
-            verify(studentService, times(1)).removeStudentById(1L);
+            verify(studentService, times(1)).removeStudentById(34894L);
         }
 
         @Test
