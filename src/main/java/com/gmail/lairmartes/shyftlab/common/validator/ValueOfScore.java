@@ -14,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD, METHOD, PARAMETER, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = MinimumAgeValidator.class)
+@Constraint(validatedBy = ValueOfScoreValidator.class)
 @Documented
 public @interface ValueOfScore {
     String message() default "Provide a score A, B, C, D, E or F.";

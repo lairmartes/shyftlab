@@ -3,6 +3,7 @@ package com.gmail.lairmartes.shyftlab.util;
 import jakarta.validation.Configuration;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorFactory;
+import lombok.NonNull;
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -21,7 +22,7 @@ public class TestUtilLocalValidatorFactoryBean extends LocalValidatorFactoryBean
     }
 
     @Override
-    protected void postProcessConfiguration(Configuration<?> configuration) {
+    protected void postProcessConfiguration(@NonNull Configuration<?> configuration) {
         super.postProcessConfiguration(configuration);
 
         ConstraintValidatorFactory constraintValidatorFactory =
