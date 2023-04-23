@@ -191,9 +191,11 @@ class StudentServiceImplTest {
             when(studentRepository.findById(anyLong())).thenThrow(new RecordNotFoundException("Student", 1223L));
 
             final var exception = assertThrows(RecordNotFoundException.class,
-                    () -> studentService.findById(10L));
+                    () -> studentService.findById(1223L));
 
             assertEquals("Student with id 1223 not found.", exception.getMessage());
+
+            verify(studentRepository, times(1)).findById(1223L);
         }
     }
 

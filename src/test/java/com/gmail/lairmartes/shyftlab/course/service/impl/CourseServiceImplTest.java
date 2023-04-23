@@ -1,7 +1,9 @@
 package com.gmail.lairmartes.shyftlab.course.service.impl;
 
+import com.gmail.lairmartes.shyftlab.common.exception.RecordNotFoundException;
 import com.gmail.lairmartes.shyftlab.course.domain.Course;
 import com.gmail.lairmartes.shyftlab.course.repository.CourseRepository;
+import com.gmail.lairmartes.shyftlab.student.domain.Student;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Nested;
@@ -10,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -70,8 +74,36 @@ class CourseServiceImplTest {
         }
     }
 
+    @Nested
+    class FindById {
 
+        @Test
+        void whenExists_thenCallsRepository_andReturnsObject() {
 
+            final var repositoryResponse = com.gmail.lairmartes.shyftlab.course.entity.Course
+                    .builder().id(15L).name("Course Name").build();
+
+            when(courseRepository.findById(15L)).thenReturn(Optional.of(repositoryResponse));
+
+            final var expectedCourse = Course.builder().id(15L).name("Course Name").build();
+
+            assertEquals(expectedCourse, courseService.findById(15L));
+
+            verify(courseRepository, times(1)).findById(15L);
+        }
+
+        @Test
+        void whenDoesNotExist_theThrowsException_andCorrectErrorMessage() {
+            when(courseRepository.findById(anyLong())).thenThrow(new RecordNotFoundException("Course", 342432L));
+
+            final var exception = assertThrows(RecordNotFoundException.class,
+                    () -> courseRepository.findById(342432L));
+
+            assertEquals("Course with id 342432 not found.", exception.getMessage());
+
+            verify(courseRepository, times(1)).findById(342432L);
+        }
+    }
 
     @Test
     void listAllCourses() {
