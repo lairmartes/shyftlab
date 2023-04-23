@@ -8,7 +8,6 @@ import org.hibernate.validator.HibernateValidator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import java.util.List;
-import java.util.Optional;
 
 public class TestUtilLocalValidatorFactoryBean extends LocalValidatorFactoryBean {
 

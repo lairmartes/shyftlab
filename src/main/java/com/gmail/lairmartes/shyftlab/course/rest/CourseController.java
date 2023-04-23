@@ -1,6 +1,5 @@
 package com.gmail.lairmartes.shyftlab.course.rest;
 
-import com.gmail.lairmartes.shyftlab.course.entity.Course;
 import com.gmail.lairmartes.shyftlab.course.rest.dto.CourseDTO;
 import com.gmail.lairmartes.shyftlab.course.service.CourseService;
 import jakarta.validation.constraints.NotNull;

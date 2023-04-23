@@ -13,7 +13,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.Clock;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -23,10 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-class MinimumAgeValidatorTest {
+class ValueOfScoreValidatorTest {
 
-    private static final int MINIMUM_AGE_TEST = 15;
-    public static final String VALIDATION_TEST_ERROR_MESSAGE = "Minimum age for test must be " + MINIMUM_AGE_TEST;
     @Mock
     private Clock mockClock;
 
@@ -36,8 +33,8 @@ class MinimumAgeValidatorTest {
     @Builder
     private static class POJOTest {
 
-        @MinimumAge(value = MINIMUM_AGE_TEST, message = VALIDATION_TEST_ERROR_MESSAGE)
-        private LocalDate birthDate;
+        @ValueOfScore
+        private String score;
     }
 
     @BeforeEach
@@ -66,37 +63,35 @@ class MinimumAgeValidatorTest {
     @Nested
     class IsValid {
         @Test
-        void whenAgeIsEqualThanMinimum_thenValidate() {
+        void whenValueIsInEnum_thenValidate() {
 
-            LocalDate date15YearsFromNowMock = LocalDate.of(2008, 4, 20);
-            final POJOTest objectToBeValidated = POJOTest.builder().birthDate(date15YearsFromNowMock).build();
+            final POJOTest objectToBeValidated = POJOTest.builder().score("A").build();
 
             assertTrue(validator.validate(objectToBeValidated).isEmpty());
         }
 
         @Test
-        void whenBirthDayIsNull_thenDoesNotValidate() {
+        void whenScoreProvidedIsNull_thenDoesNotValidate() {
 
-            final POJOTest objectToBeValidated = POJOTest.builder().birthDate(null).build();
+            final POJOTest objectToBeValidated = POJOTest.builder().score(null).build();
 
-            Set<ConstraintViolation<POJOTest>> violations = validator.validate(objectToBeValidated);
+            final Set<ConstraintViolation<POJOTest>> violations = validator.validate(objectToBeValidated);
 
             assertEquals(1, violations.size());
             assertTrue(violations.stream()
-                    .anyMatch(violation -> VALIDATION_TEST_ERROR_MESSAGE.equals(violation.getMessage())));
+                    .anyMatch(violation -> "Provide a score A, B, C, D, E or F.".equals(violation.getMessage())));
         }
 
         @Test
-        void whenAgeLessThanMinimum_thenDoesNotValidate() {
+        void whenScoreIsNotInEnum_thenDoesNotValidate() {
 
-            LocalDate dateAlmost15YearsFromNowMock = LocalDate.of(2008, 4, 22);
-            final POJOTest objectToBeValidated = POJOTest.builder().birthDate(dateAlmost15YearsFromNowMock).build();
+            final POJOTest objectToBeValidated = POJOTest.builder().score("ZZ").build();
 
-            Set<ConstraintViolation<POJOTest>> violations = validator.validate(objectToBeValidated);
+            final Set<ConstraintViolation<POJOTest>> violations = validator.validate(objectToBeValidated);
 
             assertEquals(1, violations.size());
             assertTrue(violations.stream()
-                    .anyMatch(violation -> VALIDATION_TEST_ERROR_MESSAGE.equals(violation.getMessage())));
+                    .anyMatch(violation -> "Provide a score A, B, C, D, E or F.".equals(violation.getMessage())));
         }
     }
 }
