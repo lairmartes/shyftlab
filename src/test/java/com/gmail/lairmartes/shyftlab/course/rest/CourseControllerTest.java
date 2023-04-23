@@ -14,7 +14,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -85,24 +87,44 @@ class CourseControllerTest {
 
     }
 
-    @Test
-    void listAllCourses() throws Exception {
+    @Nested
+    class ListAllCourses{
+        @Test
+        void whenReturnsData_theReturnsExpectedJson() throws Exception {
 
-        when(courseService.listAllCourses()).thenReturn(List.of(
-                Course.builder().id(234904L).name("Course 1").build(),
-                Course.builder().id(839289L).name("Course 2").build()
-        ));
+            when(courseService.listAllCourses()).thenReturn(List.of(
+                    Course.builder().id(234904L).name("Course 1").build(),
+                    Course.builder().id(839289L).name("Course 2").build()
+            ));
 
-        var mvcResult = mvc.perform(get("/courses/all"))
-                .andExpect(status().isOk())
-                .andReturn();
+            var mvcResult = mvc.perform(get("/courses/all"))
+                    .andExpect(status().isOk())
+                    .andReturn();
 
-        final var expectedResponse = "[ { 'id':234904, 'name':'Course 1' }, { 'id':839289, 'name':'Course 2' } ]";
+            final var expectedResponse = "[ { 'id':234904, 'name':'Course 1' }, { 'id':839289, 'name':'Course 2' } ]";
 
-        verify(courseService, times(1)).listAllCourses();
+            verify(courseService, times(1)).listAllCourses();
 
-        JSONAssert.assertEquals(expectedResponse, mvcResult.getResponse().getContentAsString(), JSONCompareMode.STRICT);
+            JSONAssert.assertEquals(expectedResponse, mvcResult.getResponse().getContentAsString(), JSONCompareMode.STRICT);
+        }
+
+        @Test
+        void whenListIsEmpty_thenReturnsEmptyJsonList() throws Exception {
+
+            when(courseService.listAllCourses()).thenReturn(Collections.emptyList());
+
+            var mvcResult = mvc.perform(get("/courses/all"))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            final var expectedResponse = "[ ]";
+
+            verify(courseService, times(1)).listAllCourses();
+
+            JSONAssert.assertEquals(expectedResponse, mvcResult.getResponse().getContentAsString(), JSONCompareMode.STRICT);
+        }
     }
+
 
     @Nested
     class RemoveCourseById {

@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -152,6 +153,22 @@ public class ResultControllerTest {
                     .andReturn();
 
             final var expectedResponse = TestUtilFileLoader.loadTestFile("/results/get/all/response.json");
+
+            verify(resultService, times(1)).listAllResults();
+
+            JSONAssert.assertEquals(expectedResponse, mvcResult.getResponse().getContentAsString(), JSONCompareMode.STRICT);
+        }
+
+        @Test
+        void whenListIsEmpty_thenReturnsEmptyJsonList() throws Exception {
+
+            when(resultService.listAllResults()).thenReturn(Collections.emptyList());
+
+            var mvcResult = mvc.perform(get("/results/all"))
+                    .andExpect(status().isOk())
+                    .andReturn();
+
+            final var expectedResponse = "[ ]";
 
             verify(resultService, times(1)).listAllResults();
 
