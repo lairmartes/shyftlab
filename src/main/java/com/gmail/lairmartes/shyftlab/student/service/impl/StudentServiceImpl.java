@@ -1,8 +1,8 @@
 package com.gmail.lairmartes.shyftlab.student.service.impl;
 
+import com.gmail.lairmartes.shyftlab.common.exception.RecordNotFoundException;
 import com.gmail.lairmartes.shyftlab.student.domain.Student;
 import com.gmail.lairmartes.shyftlab.student.repository.StudentRepository;
-import com.gmail.lairmartes.shyftlab.student.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Validated
 @Service
-public class StudentServiceImpl implements StudentService {
+public class StudentServiceImpl implements com.gmail.lairmartes.shyftlab.student.service.StudentService {
 
     private final StudentRepository studentRepository;
 
@@ -34,6 +34,12 @@ public class StudentServiceImpl implements StudentService {
         log.info("[STUDENT_SERVICE] Fetching all Students data");
 
         return studentRepository.findAll().stream().map(Student::fromEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public Student findById(long id) {
+        return Student.fromEntity(studentRepository
+                .findById(id).orElseThrow(() -> new RecordNotFoundException("Student", id)));
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.gmail.lairmartes.shyftlab.course.rest.dto;
 
 import com.gmail.lairmartes.shyftlab.course.domain.Course;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

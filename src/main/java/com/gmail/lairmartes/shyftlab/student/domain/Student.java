@@ -32,6 +32,7 @@ public class Student {
 
     public com.gmail.lairmartes.shyftlab.student.entity.Student toEntity() {
         return com.gmail.lairmartes.shyftlab.student.entity.Student.builder()
+                .id(this.id)
                 .firstName(this.firstName)
                 .familyName(this.familyName)
                 .birthDate(this.birthDate)

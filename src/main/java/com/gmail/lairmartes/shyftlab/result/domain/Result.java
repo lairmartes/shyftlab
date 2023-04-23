@@ -1,8 +1,8 @@
 package com.gmail.lairmartes.shyftlab.result.domain;
 
 import com.gmail.lairmartes.shyftlab.common.validator.ValueOfScore;
-import com.gmail.lairmartes.shyftlab.course.entity.Course;
-import com.gmail.lairmartes.shyftlab.student.entity.Student;
+import com.gmail.lairmartes.shyftlab.course.domain.Course;
+import com.gmail.lairmartes.shyftlab.student.domain.Student;
 import com.gmail.lairmartes.shyftlab.result.enums.Score;
 import jakarta.validation.constraints.Min;
 import lombok.*;
@@ -29,8 +29,8 @@ public class Result {
 
     public com.gmail.lairmartes.shyftlab.result.entity.Result toEntity(final Student student, final Course course) {
         return com.gmail.lairmartes.shyftlab.result.entity.Result.builder()
-                .student(student)
-                .course(course)
+                .student(student.toEntity())
+                .course(course.toEntity())
                 .score(Score.valueOf(this.score))
                 .build();
     }
@@ -39,9 +39,9 @@ public class Result {
         return Result.builder()
                 .id(entity.getId())
                 .studentId(entity.getStudent().getId())
-                .student(entity.getStudent())
+                .student(Student.fromEntity(entity.getStudent()))
                 .courseId(entity.getCourse().getId())
-                .course(entity.getCourse())
+                .course(Course.fromEntity(entity.getCourse()))
                 .score(entity.getScore().name())
                 .build();
     }

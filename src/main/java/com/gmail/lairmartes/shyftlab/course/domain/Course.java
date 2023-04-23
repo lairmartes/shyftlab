@@ -15,7 +15,7 @@ public class Course {
     private String name;
 
     public com.gmail.lairmartes.shyftlab.course.entity.Course toEntity() {
-        return com.gmail.lairmartes.shyftlab.course.entity.Course.builder().name(this.name).build();
+        return com.gmail.lairmartes.shyftlab.course.entity.Course.builder().id(this.id).name(this.name).build();
     }
 
     public static Course fromEntity(com.gmail.lairmartes.shyftlab.course.entity.Course entity) {

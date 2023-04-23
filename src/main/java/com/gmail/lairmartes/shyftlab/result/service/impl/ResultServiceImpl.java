@@ -1,13 +1,12 @@
 package com.gmail.lairmartes.shyftlab.result.service.impl;
 
-import com.gmail.lairmartes.shyftlab.common.exception.RecordNotFoundException;
-import com.gmail.lairmartes.shyftlab.course.entity.Course;
-import com.gmail.lairmartes.shyftlab.course.repository.CourseRepository;
+import com.gmail.lairmartes.shyftlab.course.domain.Course;
+import com.gmail.lairmartes.shyftlab.course.service.CourseService;
 import com.gmail.lairmartes.shyftlab.result.ResultRepository;
 import com.gmail.lairmartes.shyftlab.result.domain.Result;
 import com.gmail.lairmartes.shyftlab.result.service.ResultService;
-import com.gmail.lairmartes.shyftlab.student.entity.Student;
-import com.gmail.lairmartes.shyftlab.student.repository.StudentRepository;
+import com.gmail.lairmartes.shyftlab.student.domain.Student;
+import com.gmail.lairmartes.shyftlab.student.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -23,18 +22,16 @@ import java.util.List;
 @AllArgsConstructor
 public class ResultServiceImpl implements ResultService {
 
-    public final StudentRepository studentRepository;
-    public final CourseRepository courseRepository;
+    public final StudentService studentService;
+    public final CourseService courseService;
     public final ResultRepository resultRepository;
 
     @Override
     public Result addResult(@NonNull @Valid Result result) {
 
-        final Student student = studentRepository.findById(result.getStudentId())
-                .orElseThrow(() -> new RecordNotFoundException("Student", result.getStudentId()));
+        final Student student = studentService.findById(result.getStudentId());
 
-        final Course course = courseRepository.findById(result.getCourseId())
-                .orElseThrow(() -> new RecordNotFoundException("Course", result.getCourseId()));
+        final Course course = courseService.findById(result.getCourseId());
 
         log.info("Adding score {} for Student ID {} and Course ID {}",
                 result.getScore(), result.getStudentId(), result.getCourseId());

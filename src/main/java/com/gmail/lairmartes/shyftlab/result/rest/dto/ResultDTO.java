@@ -18,15 +18,15 @@ public class ResultDTO {
     private String courseName;
     private String score;
 
-    private Long getId() {
+    public Long getId() {
         return id == null ? 0L : id;
     }
 
-    private Long studentId() {
+    public Long studentId() {
         return studentId == null ? 0L : studentId;
     }
 
-    private Long courseId() {
+    public Long courseId() {
         return courseId == null ? 0L : courseId;
     }
 

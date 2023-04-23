@@ -1,5 +1,6 @@
 package com.gmail.lairmartes.shyftlab.course.service.impl;
 
+import com.gmail.lairmartes.shyftlab.common.exception.RecordNotFoundException;
 import com.gmail.lairmartes.shyftlab.course.domain.Course;
 import com.gmail.lairmartes.shyftlab.course.repository.CourseRepository;
 import com.gmail.lairmartes.shyftlab.course.service.CourseService;
@@ -33,6 +34,12 @@ public class CourseServiceImpl implements CourseService {
         log.info("[COURSE_SERVICE] Fetching all courses data");
 
         return courseRepository.findAll().stream().map(Course::fromEntity).toList();
+    }
+
+    @Override
+    public Course findById(long id) throws RecordNotFoundException {
+        return Course.fromEntity(courseRepository
+                .findById(id).orElseThrow(() -> new RecordNotFoundException("Course", id)));
     }
 
     @Override

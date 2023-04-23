@@ -1,13 +1,13 @@
 package com.gmail.lairmartes.shyftlab.result.service.impl;
 
 import com.gmail.lairmartes.shyftlab.common.exception.RecordNotFoundException;
-import com.gmail.lairmartes.shyftlab.course.entity.Course;
-import com.gmail.lairmartes.shyftlab.course.repository.CourseRepository;
+import com.gmail.lairmartes.shyftlab.course.domain.Course;
+import com.gmail.lairmartes.shyftlab.course.service.CourseService;
 import com.gmail.lairmartes.shyftlab.result.ResultRepository;
 import com.gmail.lairmartes.shyftlab.result.domain.Result;
 import com.gmail.lairmartes.shyftlab.result.enums.Score;
-import com.gmail.lairmartes.shyftlab.student.entity.Student;
-import com.gmail.lairmartes.shyftlab.student.repository.StudentRepository;
+import com.gmail.lairmartes.shyftlab.student.domain.Student;
+import com.gmail.lairmartes.shyftlab.student.service.StudentService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Nested;
@@ -18,7 +18,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -28,10 +27,10 @@ import static org.mockito.Mockito.*;
 class ResultServiceImplTest {
 
     @MockBean
-    private CourseRepository courseRepository;
+    private CourseService courseService;
 
     @MockBean
-    private StudentRepository studentRepository;
+    private StudentService studentService;
 
     @MockBean
     private ResultRepository resultRepository;
@@ -59,8 +58,8 @@ class ResultServiceImplTest {
         return com.gmail.lairmartes.shyftlab.result.entity.Result
                 .builder()
                 .id(id)
-                .student(student)
-                .course(course)
+                .student(student.toEntity())
+                .course(course.toEntity())
                 .score(score)
                 .build();
     }
@@ -86,17 +85,17 @@ class ResultServiceImplTest {
             final Student student = createStudent(10L, "Sasuke", "Uchicha");
             final Course course = Course.builder().id(15L).name("Kunai II").build();
 
-            when(studentRepository.findById(10L)).thenReturn(Optional.of(student));
+            when(studentService.findById(10L)).thenReturn(student);
 
-            when(courseRepository.findById(15L)).thenReturn(Optional.of(course));
+            when(courseService.findById(15L)).thenReturn(course);
 
             final Result newResult = Result.builder().studentId(10L).courseId(15L).score("B").build();
 
             final var resultParameter = com.gmail.lairmartes.shyftlab.result.entity.Result
-                    .builder().student(student).course(course).score(Score.B).build();
+                    .builder().student(student.toEntity()).course(course.toEntity()).score(Score.B).build();
 
             final var savedResult = com.gmail.lairmartes.shyftlab.result.entity.Result
-                    .builder().id(100L).student(student).course(course).score(Score.B).build();
+                    .builder().id(100L).student(student.toEntity()).course(course.toEntity()).score(Score.B).build();
 
             when(resultRepository.save(resultParameter)).thenReturn(savedResult);
 
@@ -112,8 +111,8 @@ class ResultServiceImplTest {
 
             final var actualServiceResult = resultService.addResult(newResult);
 
-            verify(studentRepository, times(1)).findById(10L);
-            verify(courseRepository, times(1)).findById(15L);
+            verify(studentService, times(1)).findById(10L);
+            verify(courseService, times(1)).findById(15L);
             verify(resultRepository, times(1)).save(resultParameter);
 
             assertEquals(expectedServiceResult, actualServiceResult);
@@ -145,9 +144,8 @@ class ResultServiceImplTest {
         @Test
         void whenStudentDoesNotExist_thenThrowsRecordNotFoundException_andReturnsCorrectMessage() {
 
-            when(studentRepository.findById(anyLong())).thenReturn(Optional.empty());
-            when(courseRepository.findById(anyLong()))
-                    .thenReturn(Optional.of(Course.builder().id(15L).name("Course Name").build()));
+            when(studentService.findById(anyLong())).thenThrow(new RecordNotFoundException("Student", 10390L));
+            when(courseService.findById(anyLong())).thenReturn(Course.builder().id(15L).name("Course Name").build());
 
             final RecordNotFoundException recordNotFoundException = assertThrows(RecordNotFoundException.class,
                     () -> resultService.addResult(Result.builder().studentId(10390L).courseId(15L).score("B").build()));
@@ -161,8 +159,8 @@ class ResultServiceImplTest {
         @Test
         void whenCourseDoesNotExist_thenThrowsRecordNotFoundException_andReturnsCorrectMessage() {
 
-            when(studentRepository.findById(anyLong()))
-                    .thenReturn(Optional.of(createStudent(10L, "Mary", "Wolf")));
+            when(studentService.findById(anyLong())).thenReturn(createStudent(10L, "Mary", "Wolf"));
+            when(courseService.findById(anyLong())).thenThrow(new RecordNotFoundException("Course", 20985));
 
             final RecordNotFoundException recordNotFoundException = assertThrows(RecordNotFoundException.class,
                     () -> resultService.addResult(Result.builder().studentId(10L).courseId(20985L).score("B").build()));
