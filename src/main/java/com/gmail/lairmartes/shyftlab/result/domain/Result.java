@@ -37,7 +37,10 @@ public class Result {
 
     public static Result fromEntity(com.gmail.lairmartes.shyftlab.result.entity.Result entity) {
         return Result.builder()
+                .id(entity.getId())
+                .studentId(entity.getStudent().getId())
                 .student(entity.getStudent())
+                .courseId(entity.getCourse().getId())
                 .course(entity.getCourse())
                 .score(entity.getScore().name())
                 .build();
