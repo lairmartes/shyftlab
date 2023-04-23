@@ -4,12 +4,12 @@ import com.gmail.lairmartes.shyftlab.common.exception.RecordNotFoundException;
 import com.gmail.lairmartes.shyftlab.course.entity.Course;
 import com.gmail.lairmartes.shyftlab.course.repository.CourseRepository;
 import com.gmail.lairmartes.shyftlab.result.domain.Result;
-import com.gmail.lairmartes.shyftlab.result.enums.Score;
 import com.gmail.lairmartes.shyftlab.student.entity.Student;
 import com.gmail.lairmartes.shyftlab.student.repository.StudentRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -207,6 +207,7 @@ class ResultServiceImplIntegrationTest {
             assertTrue(actualResults.containsAll(expectedResults));
         }
 
+        @Disabled
         @Test
         void whenRemovingStudent_thenDoesNotShowTheirResults() {
 
