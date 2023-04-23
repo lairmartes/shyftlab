@@ -42,9 +42,11 @@ public class ResultDTO {
     public static ResultDTO fromDomain(Result result) {
         return ResultDTO
                 .builder()
+                .id(result.getId())
                 .studentId(result.getStudentId())
                 .studentFullName(String.format("%s %s",
                         result.getStudent().getFirstName(), result.getStudent().getFamilyName()))
+                .studentEmail(result.getStudent().getEmail())
                 .courseId(result.getCourseId())
                 .courseName(result.getCourse().getName())
                 .score(result.getScore())

@@ -66,8 +66,6 @@ class StudentControllerTest {
                     TestUtilConstraintViolationBuilder.buildConstraintViolation("Validation Message 2")
             );
 
-            final var expectedErrorMessage = "null: Validation message 1, null: Validation message 2";
-
             when(studentService.addStudent(any(Student.class))).thenThrow(new ConstraintViolationException(violationList));
 
             var mvcResult = mvc.perform(post("/students/")

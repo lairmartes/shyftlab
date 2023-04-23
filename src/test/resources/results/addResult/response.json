@@ -1,0 +1,9 @@
+{
+  "id": 100,
+  "studentId": 10,
+  "studentFullName": "Naruto Uzumaki",
+  "studentEmail": "naruto.uzumaki@email.com",
+  "courseId": 15,
+  "courseName": "Kage Bushin III",
+  "score": "F"
+}

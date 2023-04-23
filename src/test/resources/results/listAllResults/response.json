@@ -1,0 +1,47 @@
+[
+  {
+    "id": 100,
+    "studentId": 10,
+    "studentFullName": "Naruto Uzumaki",
+    "studentEmail": "naruto.uzumaki@email.com",
+    "courseId": 15,
+    "courseName": "Kage Bushin III",
+    "score": "F"
+  },
+  {
+    "id": 110,
+    "studentId": 20,
+    "studentFullName": "Shikamaru Nara",
+    "studentEmail": "shikamaru.nara@email.com",
+    "courseId": 25,
+    "courseName": "Kawarin",
+    "score": "C"
+  },
+  {
+    "id": 120,
+    "studentId": 30,
+    "studentFullName": "Sasuke Uchiha",
+    "studentEmail": "sasuke.uchiha@email.com",
+    "courseId": 15,
+    "courseName": "Kage Bushin III",
+    "score": "B"
+  },
+  {
+    "id": 130,
+    "studentId": 40,
+    "studentFullName": "Hinata Hyuuga",
+    "studentEmail": "hinata.hyuuga@email.com",
+    "courseId": 25,
+    "courseName": "Kawarin",
+    "score": "A"
+  },
+  {
+    "id": 140,
+    "studentId": 50,
+    "studentFullName": "Sakura Haruno",
+    "studentEmail": "sakura.haruno@email.com",
+    "courseId": 25,
+    "courseName": "Kawarin",
+    "score": "A"
+  }
+]

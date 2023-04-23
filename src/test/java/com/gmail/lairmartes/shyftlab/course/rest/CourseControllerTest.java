@@ -3,7 +3,6 @@ package com.gmail.lairmartes.shyftlab.course.rest;
 import com.gmail.lairmartes.shyftlab.course.domain.Course;
 import com.gmail.lairmartes.shyftlab.course.service.CourseService;
 import com.gmail.lairmartes.shyftlab.util.TestUtilConstraintViolationBuilder;
-import com.gmail.lairmartes.shyftlab.util.TestUtilFileLoader;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Nested;
@@ -22,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = CourseController.class)
@@ -67,8 +65,6 @@ class CourseControllerTest {
                     TestUtilConstraintViolationBuilder.buildConstraintViolation("Validation Message 1"),
                     TestUtilConstraintViolationBuilder.buildConstraintViolation("Validation Message 2")
             );
-
-            final var expectedErrorMessage = "null: Validation message 1, null: Validation message 2";
 
             when(courseService.addCourse(any(Course.class))).thenThrow(new ConstraintViolationException(violationList));
 

@@ -3,10 +3,7 @@ package com.gmail.lairmartes.shyftlab.result.rest;
 import com.gmail.lairmartes.shyftlab.result.rest.dto.ResultDTO;
 import com.gmail.lairmartes.shyftlab.result.service.ResultService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +19,7 @@ public class ResultController {
         return ResultDTO.fromDomain(resultService.addResult(newResult.toDomain()));
     }
 
+    @GetMapping("/all")
     public List<ResultDTO> listAllResults() {
         return resultService.listAllResults().stream().map(ResultDTO::fromDomain).toList();
     }

@@ -3,7 +3,6 @@ package com.gmail.lairmartes.shyftlab.course.service.impl;
 import com.gmail.lairmartes.shyftlab.common.exception.RecordNotFoundException;
 import com.gmail.lairmartes.shyftlab.course.domain.Course;
 import com.gmail.lairmartes.shyftlab.course.repository.CourseRepository;
-import com.gmail.lairmartes.shyftlab.student.domain.Student;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Nested;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
