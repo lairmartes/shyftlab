@@ -1,6 +1,5 @@
 package com.gmail.lairmartes.shyftlab.student.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gmail.lairmartes.shyftlab.student.domain.Student;
 import com.gmail.lairmartes.shyftlab.student.service.StudentService;
 import com.gmail.lairmartes.shyftlab.util.TestUtilConstraintViolationBuilder;
@@ -44,9 +43,9 @@ class StudentControllerTest {
 
             when(studentService.addStudent(getStudentRequest())).thenReturn(getStudentResponse());
 
-            final var expectedResponse = TestUtilFileLoader.loadTestFile("/students/validStudentResponse.json");
+            final var expectedResponse = TestUtilFileLoader.loadTestFile("/students/addStudent/response.json");
 
-            final var addStudentRequestBody = TestUtilFileLoader.loadTestFile("/students/validStudentRequest.json");
+            final var addStudentRequestBody = TestUtilFileLoader.loadTestFile("/students/addStudent/request.json");
 
             var mvcResult = mvc.perform(post("/students/")
                             .contentType("application/json")
@@ -98,7 +97,7 @@ class StudentControllerTest {
                     .andExpect(status().isOk())
                     .andReturn();
 
-            final var expectedResponse = TestUtilFileLoader.loadTestFile("/students/allStudentsList.json");
+            final var expectedResponse = TestUtilFileLoader.loadTestFile("/students/listAllStudents/response.json");
 
             verify(studentService, times(1)).listAllStudents();
 

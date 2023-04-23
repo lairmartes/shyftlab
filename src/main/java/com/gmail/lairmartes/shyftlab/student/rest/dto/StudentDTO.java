@@ -12,16 +12,21 @@ import java.time.LocalDate;
 @Setter
 public class StudentDTO {
 
-    private long id;
+    private Long id;
     private String firstName;
     private String familyName;
     private LocalDate birthDate;
     private String email;
 
+    public Long getId() {
+        return id == null ? 0L : id;
+    }
+
+
     public Student toDomain() {
         return Student
                 .builder()
-                .id(this.id)
+                .id(getId())
                 .firstName(this.firstName)
                 .familyName(this.familyName)
                 .birthDate(this.birthDate)
