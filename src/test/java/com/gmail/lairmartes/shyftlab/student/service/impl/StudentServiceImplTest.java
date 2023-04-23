@@ -1,5 +1,6 @@
 package com.gmail.lairmartes.shyftlab.student.service.impl;
 
+import com.gmail.lairmartes.shyftlab.common.exception.RecordNotFoundException;
 import com.gmail.lairmartes.shyftlab.student.domain.Student;
 import com.gmail.lairmartes.shyftlab.student.repository.StudentRepository;
 import jakarta.validation.ConstraintViolation;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -151,6 +153,47 @@ class StudentServiceImplTest {
             verify(studentRepository, times(1)).save(validStudent.toEntity());
 
             assertEquals(expectedResult, actualResult);
+        }
+    }
+
+    @Nested
+    class FindById {
+
+        @Test
+        void whenExists_thenCallsRepository_andReturnsObject() {
+
+            final var repositoryResponse = com.gmail.lairmartes.shyftlab.student.entity.Student
+                    .builder()
+                    .id(10L)
+                    .firstName("First Name")
+                    .familyName("Family Name")
+                    .birthDate(LocalDate.of(1993,12,12))
+                    .email("name@email.com")
+                    .build();
+
+            when(studentRepository.findById(10L)).thenReturn(Optional.of(repositoryResponse));
+
+            final var expectedStudent = Student
+                    .builder().id(10L)
+                    .firstName("First Name")
+                    .familyName("Family Name")
+                    .birthDate(LocalDate.of(1993, 12, 12))
+                    .email("name@email.com")
+                    .build();
+
+            assertEquals(expectedStudent, studentService.findById(10L));
+
+            verify(studentRepository, times(1)).findById(10L);
+        }
+
+        @Test
+        void whenDoesNotExist_theThrowsException_andCorrectErrorMessage() {
+            when(studentRepository.findById(anyLong())).thenThrow(new RecordNotFoundException("Student", 1223L));
+
+            final var exception = assertThrows(RecordNotFoundException.class,
+                    () -> studentService.findById(10L));
+
+            assertEquals("Student with id 1223 not found.", exception.getMessage());
         }
     }
 
