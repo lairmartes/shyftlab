@@ -21,7 +21,7 @@ public class CourseController {
         return CourseDTO.fromDomain(courseService.addCourse(course.toDomain()));
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public List<CourseDTO> listAllCourses() {
         return courseService.listAllCourses().stream().map(CourseDTO::fromDomain).toList();
     }

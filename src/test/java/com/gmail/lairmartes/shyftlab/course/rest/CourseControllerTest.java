@@ -93,7 +93,7 @@ class CourseControllerTest {
                 Course.builder().id(839289L).name("Course 2").build()
         ));
 
-        var mvcResult = mvc.perform(get("/courses/"))
+        var mvcResult = mvc.perform(get("/courses/all"))
                 .andExpect(status().isOk())
                 .andReturn();
 

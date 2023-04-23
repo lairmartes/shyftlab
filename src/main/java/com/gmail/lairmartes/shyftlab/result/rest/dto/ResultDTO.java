@@ -22,11 +22,11 @@ public class ResultDTO {
         return id == null ? 0L : id;
     }
 
-    public Long studentId() {
+    public Long getStudentId() {
         return studentId == null ? 0L : studentId;
     }
 
-    public Long courseId() {
+    public Long getCourseId() {
         return courseId == null ? 0L : courseId;
     }
 

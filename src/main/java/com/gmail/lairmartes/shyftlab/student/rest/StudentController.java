@@ -25,7 +25,7 @@ public class StudentController {
         return StudentDTO.fromDomain(studentService.addStudent(newStudent.toDomain()));
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public List<StudentDTO> listAllStudents() {
         return studentService.listAllStudents().stream().map(StudentDTO::fromDomain).collect(Collectors.toList());
     }

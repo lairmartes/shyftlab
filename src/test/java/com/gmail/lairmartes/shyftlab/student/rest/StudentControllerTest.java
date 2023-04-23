@@ -43,9 +43,9 @@ class StudentControllerTest {
 
             when(studentService.addStudent(getStudentRequest())).thenReturn(getStudentResponse());
 
-            final var expectedResponse = TestUtilFileLoader.loadTestFile("/students/addStudent/response.json");
+            final var expectedResponse = TestUtilFileLoader.loadTestFile("/students/post/response.json");
 
-            final var addStudentRequestBody = TestUtilFileLoader.loadTestFile("/students/addStudent/request.json");
+            final var addStudentRequestBody = TestUtilFileLoader.loadTestFile("/students/post/request.json");
 
             var mvcResult = mvc.perform(post("/students/")
                             .contentType("application/json")
@@ -91,11 +91,11 @@ class StudentControllerTest {
 
             when(studentService.listAllStudents()).thenReturn(listAllStudentResponse());
 
-            var mvcResult = mvc.perform(get("/students/"))
+            var mvcResult = mvc.perform(get("/students/all"))
                     .andExpect(status().isOk())
                     .andReturn();
 
-            final var expectedResponse = TestUtilFileLoader.loadTestFile("/students/listAllStudents/response.json");
+            final var expectedResponse = TestUtilFileLoader.loadTestFile("/students/get/all/response.json");
 
             verify(studentService, times(1)).listAllStudents();
 

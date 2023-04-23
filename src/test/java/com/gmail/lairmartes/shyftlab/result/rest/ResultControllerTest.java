@@ -61,8 +61,8 @@ public class ResultControllerTest {
 
             when(resultService.addResult(addResultRequest)).thenReturn(responseFromService);
 
-            final var request = TestUtilFileLoader.loadTestFile("/results/addResult/request.json");
-            final var expectedResponse = TestUtilFileLoader.loadTestFile("/results/addResult/response.json");
+            final var request = TestUtilFileLoader.loadTestFile("/results/post/request.json");
+            final var expectedResponse = TestUtilFileLoader.loadTestFile("/results/post/response.json");
 
             var mvcResult = mvc.perform(post("/results/")
                             .contentType("application/json")
@@ -107,7 +107,7 @@ public class ResultControllerTest {
 
             when(resultService.addResult(any(Result.class))).thenThrow(exception);
 
-            final var request = TestUtilFileLoader.loadTestFile("/results/addResult/request.json");
+            final var request = TestUtilFileLoader.loadTestFile("/results/post/request.json");
 
             var mvcResult = mvc.perform(post("/results/")
                             .contentType("application/json")
@@ -151,7 +151,7 @@ public class ResultControllerTest {
                     .andExpect(status().isOk())
                     .andReturn();
 
-            final var expectedResponse = TestUtilFileLoader.loadTestFile("/results/listAllResults/response.json");
+            final var expectedResponse = TestUtilFileLoader.loadTestFile("/results/get/all/response.json");
 
             verify(resultService, times(1)).listAllResults();
 
