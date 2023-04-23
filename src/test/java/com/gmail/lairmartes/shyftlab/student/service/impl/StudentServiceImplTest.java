@@ -167,7 +167,7 @@ class StudentServiceImplTest {
                     .id(10L)
                     .firstName("First Name")
                     .familyName("Family Name")
-                    .birthDate(LocalDate.of(1993,12,12))
+                    .birthDate(LocalDate.of(1993, 12, 12))
                     .email("name@email.com")
                     .build();
 
