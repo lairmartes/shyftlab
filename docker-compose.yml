@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  student-management:
+    image: lairmartes/shyftlabs:0.0.1.RELEASE
+    ports:
+      - "8000:8080"
+    restart: always
+    networks:
+      - shyftlabs-network
+
+networks:
+  shyftlabs-network:
