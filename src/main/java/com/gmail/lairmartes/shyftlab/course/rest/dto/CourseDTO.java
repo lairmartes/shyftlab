@@ -1,13 +1,13 @@
 package com.gmail.lairmartes.shyftlab.course.rest.dto;
 
 import com.gmail.lairmartes.shyftlab.course.domain.Course;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CourseDTO {
 
     private Long id;

@@ -1,10 +1,10 @@
 package com.gmail.lairmartes.shyftlab.result.rest.dto;
 
 import com.gmail.lairmartes.shyftlab.result.domain.Result;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Getter
 @Setter
