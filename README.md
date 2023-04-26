@@ -12,16 +12,16 @@ This project has been created by Lair Martes as Selection Process for Shyftlabs.
 * Run `docker run -p <local-port>:8080` in project's folder.
 * Use address `http://localhost:8000` to access the services.
 ### API Endpoints
-| HTTP Verbs | Endpoints     | Action                                                |
-|------------|---------------|-------------------------------------------------------|
-| POST       | /students/    | Add new student                                       |
-| POST       | /courses/     | Add new course                                        |
-| POST       | /results/     | Add new result                                        |
-| GET        | /students/all | To retrieve all Students                              |
-| GET        | /courses/all  | To retrieve all Courses                               |
-| GET        | /results/all  | To retrieve all Results                               |
-| DELETE     | /students/:id | To delete a student (will remove all results related) |
-| DELETE     | /courses/:id  | To delete a course (will remove all results related)  |
+| HTTP Verbs | Endpoints         | Action                                                |
+|------------|-------------------|-------------------------------------------------------|
+| POST       | /api/students/    | Add new student                                       |
+| POST       | /api/courses/     | Add new course                                        |
+| POST       | /api/results/     | Add new result                                        |
+| GET        | /api/students/all | To retrieve all Students                              |
+| GET        | /api/courses/all  | To retrieve all Courses                               |
+| GET        | /api/results/all  | To retrieve all Results                               |
+| DELETE     | /api/students/:id | To delete a student (will remove all results related) |
+| DELETE     | /api/courses/:id  | To delete a course (will remove all results related)  |
 ### Payload examples:
 #### Add Student
 ```json
