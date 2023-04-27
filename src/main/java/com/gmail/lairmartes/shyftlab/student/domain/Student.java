@@ -26,7 +26,7 @@ public class Student {
     @NotNull(message = "Provide a birth date.")
     @MinimumAge(value = STUDENT_MINIMUM_ALLOWED_AGE, message = STUDENT_MINIMUM_ALLOWED_AGE_MESSAGE)
     private LocalDate birthDate;
-    @NotNull(message = "Provide a valid email.")
+    @NotBlank(message = "Provide an email.")
     @Email(message = "Provide a valid email.")
     private String email;
 
