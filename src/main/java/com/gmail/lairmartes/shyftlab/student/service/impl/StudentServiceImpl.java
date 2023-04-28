@@ -33,7 +33,7 @@ public class StudentServiceImpl implements com.gmail.lairmartes.shyftlab.student
     public List<Student> listAllStudents() {
         log.info("[STUDENT_SERVICE] Fetching all Students data");
 
-        return studentRepository.findAll().stream().map(Student::fromEntity).collect(Collectors.toList());
+        return studentRepository.findStudentsOrderedByName().stream().map(Student::fromEntity).collect(Collectors.toList());
     }
 
     @Override
