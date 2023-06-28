@@ -8,24 +8,16 @@ import lombok.Builder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.validation.annotation.Validated;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 
 class ValueOfScoreValidatorTest {
-
-    @Mock
-    private Clock mockClock;
 
     private Validator validator;
 
@@ -41,21 +33,13 @@ class ValueOfScoreValidatorTest {
     void setup() {
         MockitoAnnotations.openMocks(this);
 
-        setupClock();
-
         setupValidators();
     }
 
-    private void setupClock() {
-        var fixedTimeForTest = LocalDateTime.of(2023, 4, 21, 15, 30, 0);
-
-        when(mockClock.getZone()).thenReturn(ZoneOffset.UTC);
-        when(mockClock.instant()).thenReturn(fixedTimeForTest.toInstant(ZoneOffset.UTC));
-    }
 
     private void setupValidators() {
         List<ConstraintValidator<?, ?>> constraintValidatorInstances = List.of(
-                new MinimumAgeValidator(mockClock)
+                new ValueOfScoreValidator()
         );
         validator = new TestUtilLocalValidatorFactoryBean(constraintValidatorInstances);
     }
